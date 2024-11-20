@@ -1,7 +1,11 @@
 # UnClog
 ## Remove unwanted console.logs before committing
 
-![Example Output](./docs/example_output.png)
+<img src="./docs/unclog_illustration.png" alt="Unclog Illustration" width="500"/>
+
+<br />
+
+<img src="./docs/example_output.png" alt="Example output screenshot"/>
 
 ### Problem Statement
 As a frontend developer, I often add console.logs to debug problems. After fixing the bug, these console.logs remain scattered throughout the project. Manually removing them before committing can be tedious and error-prone.
@@ -35,7 +39,7 @@ source ~/.zshrc
 
 ### .bashrc file:
 ```
-echo "\n\nalias unclog='$(pwd)/bin/unclog.sh'" >> ~/.bashrc
+echo "\n\nalias unclog="<path_to_repository>/bin/unclog.sh'" >> ~/.bashrc
 source ~/.bashrc
 ```
 
