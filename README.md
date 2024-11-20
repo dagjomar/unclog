@@ -16,12 +16,35 @@ UnClog is a script that finds and optionally removes console logging statements 
 - Helps you locate specific console.log statements for modification.
 - Depending on your IDE/Terminal setup, you can click on the file path to open the file at the correct line number.
 
-### Usage
-To use the script, navigate to your repository root and run the script with the desired options.
+<br />
+<br />
 
-#### Options
-- `--fix`: Automatically remove found console logs.
-- `--dry`: Perform a dry run without making any changes.
+# Installation
+1. Clone the repository to your local machine:
+2. Add an alias to your bash or zsh profile
 
-#### Examples
-TODO: Add examples
+To automatically add this line to your bash/zsh you can run one of these scripts while in this repo folder:
+
+### .zshrc file:
+```
+echo "\n\nalias unclog='$(pwd)/bin/unclog.sh'" >> ~/.zshrc
+source ~/.zshrc
+```
+
+### .bashrc file:
+```
+echo "\n\nalias unclog='$(pwd)/bin/unclog.sh'" >> ~/.bashrc
+source ~/.bashrc
+```
+
+# Testing it
+You can immediately test it in this folder by running the `test_preview.sh` file:
+```
+./test_preview.sh
+```
+This will add some example `console.log` statements into a test file.
+
+Then you can now run `unclog` in this repo and see the output:
+```
+unclog
+```
