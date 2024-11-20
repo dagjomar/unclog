@@ -78,7 +78,7 @@ remove_console_logs() {
     if [ "$FIX_MODE" = true ]; then
         # Sort unique files
         for file in $(cut -d: -f1 "$TEMP_FILE" | sort -u); do
-            echo -e "\n${GREEN}Removing console.logs from $file...${NC}"
+            echo -e "\n${GREEN}Unclogging $file...${NC}"
             # Get and sort line numbers in descending order
             grep "^$file:" "$TEMP_FILE" | cut -d: -f2 | sort -nr | while read -r line; do
                 if [ "$DRY_RUN" = true ]; then
@@ -92,6 +92,11 @@ remove_console_logs() {
             if [ "$DRY_RUN" = false ]; then
                 rm "${file}.bak"
             fi
+
+            # echo a line seperator
+            echo "----------------------------------------"
+            NUM_UNCLOGGED=$(grep -c "^$file:" "$TEMP_FILE")
+            echo -e "${GREEN}Unclogged $NUM_UNCLOGGED files${NC}"
         done
     fi
 }
@@ -137,16 +142,24 @@ process_diff ""
 
 # Check untracked files
 echo -e "${RED}Checking untracked files...${NC}"
-git ls-files --others --exclude-standard | while read -r file; do
-    if [ -f "$file" ]; then
+untracked_files=$(git ls-files --others --exclude-standard)
+if [ -n "$untracked_files" ]; then
+  # Your existing logic to handle untracked files
+  echo "$untracked_files" | while read -r file; do
+    if file "$file" | grep -q 'text'; then
+        echo "Untracked file: $file"
+
+        if [ -f "$file" ]; then
         while IFS=: read -r line_num content; do
             # Only process lines that contain our patterns
             if [[ $content =~ $GREP_PATTERN ]]; then
                 print_match "$file" "$line_num" "$(echo "$content" | sed -e 's/^[[:space:]]*//')"
             fi
-        done < <(nl -ba "$file" | sed 's/[[:space:]]*\([0-9]*\)[[:space:]]*/\1:/')
+            done < <(nl -ba "$file" | sed 's/[[:space:]]*\([0-9]*\)[[:space:]]*/\1:/')
+        fi
     fi
-done
+  done
+fi
 
 # Check if we found any changes
 if [ -z "$(git diff)" ] && [ -z "$(git diff --cached)" ] && [ -z "$(git ls-files --others --exclude-standard)" ]; then
