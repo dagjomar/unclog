@@ -1,6 +1,8 @@
 # UnClog
 ## Remove unwanted console.logs before committing
 
+![Example Output](./docs/example_output.png)
+
 ### Problem Statement
 As a frontend developer, I often add console.logs to debug problems. After fixing the bug, these console.logs remain scattered throughout the project. Manually removing them before committing can be tedious and error-prone.
 
@@ -47,4 +49,19 @@ This will add some example `console.log` statements into a test file.
 Then you can now run `unclog` in this repo and see the output:
 ```
 unclog
+
+Checking staged changes...
+  • test/existing_file.js:12
+Checking unstaged changes...
+  • test/existing_file.js:14
+```
+
+Now you can try the automatic cleanup functionality by running
+```
+unclog --fix
+```
+
+To verify before fixing, do a dry run
+```
+unclog --fix --dry
 ```
